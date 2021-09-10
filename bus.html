@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+  <div id="div1">
+    <h1>Estimated time of arrival</h1>
+  </div>
+
+</body>
+</html>
+<script>
+
+var StopList = [
+  { stop: '001696', name:'鑽石山'  },
+  { stop: '001505', name:'九龍灣'  },
+  { stop: '001523', name:'黄大仙'  }
+]
+
+var RouteList = [
+  { route: 'E22X' },
+  { route: 'E22P' },
+  { route: 'E22A' },
+  { route: 'A26' },
+  { route: 'A29' }
+];
+
+
+const element = document.getElementById("div1");
+
+for (var i = 0; i < StopList.length; i++) {
+  const para = document.createElement("h4");
+  const node = document.createTextNode(StopList[i]['name']);
+
+  para.setAttribute("id",this.id);
+
+  para.appendChild(node);
+  element.appendChild(para);
+  for (var j = 0; j < RouteList.length; j++) {
+    var xmlHttp = new XMLHttpRequest();
+
+    var url = 'https://rt.data.gov.hk/v1/transport/citybus-nwfb/eta/CTB/'+StopList[i]['stop']+'/'+RouteList[j]['route'];
+    console.log(url);
+    xmlHttp.open( "GET", this.url ,false); // false for synchronous request
+    xmlHttp.send( null );
+
+    const id = StopList[i]['name'] + RouteList[j]['route'];
+
+    console.log(xmlHttp.responseText);
+
+    const response = JSON.parse(xmlHttp.responseText);
+
+    if(response['data'].length > 0)
+    {
+      var date = Date.parse(response['data'][0]['eta']);
+      var formatteddatestr = moment(date).format('hh:mm:ss a');
+
+      var abc = RouteList[j]['route'] + ' : ' + formatteddatestr + '\n';
+
+      const para = document.createElement("p");
+      const node = document.createTextNode(abc);
+
+      para.setAttribute("id",this.id);
+
+      para.appendChild(node);
+      element.appendChild(para);
+    }
+
+/*
+    xmlHttp.onload = function(e) {
+      if (this.status == 200) {
+        const response = this.response;
+        console.log(this.response);
+        var abc = id + ' eta: ' + String(response['generated_timestamp ']) + '\n';
+        const para = document.createElement("p");
+        const node = document.createTextNode(abc);
+
+        para.setAttribute("id",this.id);
+
+        para.appendChild(node);
+        element.appendChild(para);
+      }
+    };
+*/
+
+  }
+}
+
+//document.getElementById("demo").innerHTML = ""+ response['generated_timestamp '];
+
+
+</script>
