@@ -5,7 +5,7 @@
 <title>肥仔上班時間表</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" type="text/javascript"></script>
 </head>
-<body>
+<body style="text-align:center">
 
   <div id="div1">
     <h1>肥仔上班時間表</h1>
@@ -22,6 +22,7 @@ var StopList = [
 ]
 
 var RouteList = [
+  { route: 'E22' },
   { route: 'E22X' },
   { route: 'E22P' },
   { route: 'E22A' },
@@ -56,18 +57,24 @@ for (var i = 0; i < StopList.length; i++) {
 
     if(response['data'].length > 0)
     {
-      var date = Date.parse(response['data'][0]['eta']);
-      var formatteddatestr = moment(date).format('hh:mm:ss a');
+        for (var k = 0; k < response['data'].length; k++) {
+          if(response['data'][k]['dir']=="O")
+          {
+          var date = Date.parse(response['data'][0]['eta']);
+          var formatteddatestr = moment(date).format('hh:mm:ss a');
 
-      var abc = RouteList[j]['route'] + ' : ' + formatteddatestr + '\n';
+          var abc = RouteList[j]['route'] + ' : ' + formatteddatestr + '\n';
 
-      const para = document.createElement("p");
-      const node = document.createTextNode(abc);
+          const para = document.createElement("p");
+          const node = document.createTextNode(abc);
 
-      para.setAttribute("id",this.id);
+          para.setAttribute("id",this.id);
 
-      para.appendChild(node);
-      element.appendChild(para);
+          para.appendChild(node);
+          element.appendChild(para);
+          break;
+        }
+      }
     }
 
 /*
