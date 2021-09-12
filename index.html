@@ -1,103 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>肥仔上班時間表</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" type="text/javascript"></script>
-</head>
-<body style="text-align:center">
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <title>肥肥上班時間表</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="styles.31d6cfe0d16ae931b73c.css"></head>
+<body>
+  <app-root></app-root>
+<script src="runtime.fb2b7a6ff034a2e850b4.js" defer></script><script src="polyfills.564419bf68f1499e1711.js" defer></script><script src="main.bb92680b2cadfd2902a4.js" defer></script>
 
-  <div id="div1">
-    <h1>肥仔上班時間表</h1>
-  </div>
-
-</body>
-</html>
-<script>
-
-var StopList = [
-  { stop: '001500', name:'九龍灣'  },
-  { stop: '001695', name:'鑽石山'  },
-  { stop: '001690', name:'黄大仙'  }
-]
-
-var RouteList = [
-  { route: 'E22' },
-  { route: 'E22X' },
-  { route: 'E22P' },
-  { route: 'E22A' },
-  { route: 'A26' },
-  { route: 'A29' }
-];
-
-
-const element = document.getElementById("div1");
-
-for (var i = 0; i < StopList.length; i++) {
-  const para = document.createElement("h4");
-  const node = document.createTextNode(StopList[i]['name']);
-
-  para.setAttribute("id",this.id);
-
-  para.appendChild(node);
-  element.appendChild(para);
-  for (var j = 0; j < RouteList.length; j++) {
-    var xmlHttp = new XMLHttpRequest();
-
-    var url = 'https://rt.data.gov.hk/v1/transport/citybus-nwfb/eta/CTB/'+StopList[i]['stop']+'/'+RouteList[j]['route'];
-    console.log(url);
-    xmlHttp.open( "GET", this.url ,false); // false for synchronous request
-    xmlHttp.send( null );
-
-    const id = StopList[i]['name'] + RouteList[j]['route'];
-
-    console.log(xmlHttp.responseText);
-
-    const response = JSON.parse(xmlHttp.responseText);
-
-    if(response['data'].length > 0)
-    {
-        for (var k = 0; k < response['data'].length; k++) {
-          if(response['data'][k]['dir']=="O")
-          {
-          var date = Date.parse(response['data'][0]['eta']);
-          var formatteddatestr = moment(date).format('hh:mm:ss a');
-
-          var abc = RouteList[j]['route'] + ' : ' + formatteddatestr + '\n';
-
-          const para = document.createElement("p");
-          const node = document.createTextNode(abc);
-
-          para.setAttribute("id",this.id);
-
-          para.appendChild(node);
-          element.appendChild(para);
-          break;
-        }
-      }
-    }
-
-/*
-    xmlHttp.onload = function(e) {
-      if (this.status == 200) {
-        const response = this.response;
-        console.log(this.response);
-        var abc = id + ' eta: ' + String(response['generated_timestamp ']) + '\n';
-        const para = document.createElement("p");
-        const node = document.createTextNode(abc);
-
-        para.setAttribute("id",this.id);
-
-        para.appendChild(node);
-        element.appendChild(para);
-      }
-    };
-*/
-
-  }
-}
-
-//document.getElementById("demo").innerHTML = ""+ response['generated_timestamp '];
-
-
-</script>
+</body></html>
